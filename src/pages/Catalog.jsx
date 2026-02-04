@@ -1,7 +1,7 @@
 import { useState, useMemo } from 'react';
+import { useAdmin } from '../context/AdminContext';
 import ProductCard from '../components/ProductCard';
 import CategoryFilter from '../components/CategoryFilter';
-import { products, categories } from '../data/products';
 
 /**
  * CATALOG PAGE
@@ -10,12 +10,13 @@ import { products, categories } from '../data/products';
  */
 
 function Catalog() {
+  const { products, categories } = useAdmin();
   const [activeCategory, setActiveCategory] = useState('all');
 
   const filteredProducts = useMemo(() => {
     if (activeCategory === 'all') return products;
     return products.filter((p) => p.category === activeCategory);
-  }, [activeCategory]);
+  }, [activeCategory, products]);
 
   return (
     <div className="animate-fade-in py-12 md:py-20">

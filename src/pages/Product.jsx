@@ -1,7 +1,7 @@
 import { useState, useMemo } from 'react';
-import { useParams, Link, useNavigate } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, Plus, Minus, ShoppingBag, Check } from 'lucide-react';
-import { products, categories } from '../data/products';
+import { useAdmin } from '../context/AdminContext';
 import { useCart } from '../context/CartContext';
 
 /**
@@ -12,7 +12,7 @@ import { useCart } from '../context/CartContext';
 
 function Product() {
   const { id } = useParams();
-  const navigate = useNavigate();
+  const { products, categories } = useAdmin();
   const { addItem } = useCart();
   const [quantity, setQuantity] = useState(1);
   const [added, setAdded] = useState(false);
@@ -35,13 +35,13 @@ function Product() {
     return products
       .filter((p) => p.category === product.category && p.id !== product.id)
       .slice(0, 3);
-  }, [product]);
+  }, [product, products]);
 
   const categoryName = useMemo(() => {
     if (!product) return 'Цветы';
     const cat = categories.find((c) => c.slug === product.category);
     return cat ? cat.name : 'Цветы';
-  }, [product]);
+  }, [product, categories]);
 
   const handleAddToCart = () => {
     addItem(product, quantity);

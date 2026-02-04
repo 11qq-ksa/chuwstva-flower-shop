@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { useState } from 'react';
 import { CartProvider } from './context/CartContext';
+import { AdminProvider } from './context/AdminContext';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import LoadingScreen from './components/LoadingScreen';
@@ -11,6 +12,13 @@ import Cart from './pages/Cart';
 import Checkout from './pages/Checkout';
 import About from './pages/About';
 import Contacts from './pages/Contacts';
+
+// Admin pages
+import AdminLayout from './admin/AdminLayout';
+import AdminDashboard from './admin/AdminDashboard';
+import AdminProducts from './admin/AdminProducts';
+import AdminCategories from './admin/AdminCategories';
+import AdminLogin from './admin/AdminLogin';
 import './index.css';
 
 /**
@@ -33,28 +41,43 @@ function App() {
   const [isLoading, setIsLoading] = useState(true);
 
   return (
-    <CartProvider>
-      <Router>
-        {/* Loading Screen */}
-        {isLoading && <LoadingScreen onComplete={() => setIsLoading(false)} />}
-        
-        <div className={`min-h-screen flex flex-col transition-opacity duration-500 ${isLoading ? 'opacity-0' : 'opacity-100'}`}>
-          <Header />
-          <main className="flex-grow">
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/catalog" element={<Catalog />} />
-              <Route path="/product/:id" element={<Product />} />
-              <Route path="/cart" element={<Cart />} />
-              <Route path="/checkout" element={<Checkout />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/contacts" element={<Contacts />} />
-            </Routes>
-          </main>
-          <Footer />
-        </div>
-      </Router>
-    </CartProvider>
+    <AdminProvider>
+      <CartProvider>
+        <Router>
+          {/* Loading Screen */}
+          {isLoading && <LoadingScreen onComplete={() => setIsLoading(false)} />}
+          
+          <Routes>
+            {/* Admin Routes */}
+            <Route path="/admin/login" element={<AdminLogin />} />
+            <Route path="/admin" element={<AdminLayout />}>
+              <Route index element={<AdminDashboard />} />
+              <Route path="products" element={<AdminProducts />} />
+              <Route path="categories" element={<AdminCategories />} />
+            </Route>
+
+            {/* Public Routes */}
+            <Route path="*" element={
+              <div className={`min-h-screen flex flex-col transition-opacity duration-500 ${isLoading ? 'opacity-0' : 'opacity-100'}`}>
+                <Header />
+                <main className="flex-grow">
+                  <Routes>
+                    <Route path="/" element={<Home />} />
+                    <Route path="/catalog" element={<Catalog />} />
+                    <Route path="/product/:id" element={<Product />} />
+                    <Route path="/cart" element={<Cart />} />
+                    <Route path="/checkout" element={<Checkout />} />
+                    <Route path="/about" element={<About />} />
+                    <Route path="/contacts" element={<Contacts />} />
+                  </Routes>
+                </main>
+                <Footer />
+              </div>
+            } />
+          </Routes>
+        </Router>
+      </CartProvider>
+    </AdminProvider>
   );
 }
 

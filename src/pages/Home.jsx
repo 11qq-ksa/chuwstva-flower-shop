@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 import ProductCard from '../components/ProductCard';
 import { ScrollReveal } from '../hooks/useScrollReveal.jsx';
-import { products } from '../data/products';
+import { useAdmin } from '../context/AdminContext';
 
 /**
  * HOME PAGE
@@ -12,6 +12,8 @@ import { products } from '../data/products';
  */
 
 function Home() {
+  const { products } = useAdmin();
+  
   // Get 4 featured products
   const featuredProducts = products.slice(0, 4);
 
