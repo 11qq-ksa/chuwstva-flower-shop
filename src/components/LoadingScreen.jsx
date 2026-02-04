@@ -49,7 +49,7 @@ function LoadingScreen({ onComplete }) {
         <img 
           src="/logo2.svg" 
           alt="Чувства в цветах"
-          className={`w-32 h-32 md:w-48 md:h-48 transition-all duration-400 ${
+          className={`w-32 h-32 md:w-48 md:h-48 transition-all duration-500 ${
             logoFading ? 'opacity-0 scale-150' : 'opacity-100 scale-100'
           }`}
           style={{ 

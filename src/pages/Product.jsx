@@ -1,7 +1,7 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Plus, Minus, ShoppingBag, Check } from 'lucide-react';
-import { products } from '../data/products';
+import { products, categories } from '../data/products';
 import { useCart } from '../context/CartContext';
 
 /**
@@ -30,10 +30,18 @@ function Product() {
     );
   }
 
-  // Get related products from same category
-  const relatedProducts = products
-    .filter((p) => p.category === product.category && p.id !== product.id)
-    .slice(0, 3);
+  const relatedProducts = useMemo(() => {
+    if (!product) return [];
+    return products
+      .filter((p) => p.category === product.category && p.id !== product.id)
+      .slice(0, 3);
+  }, [product]);
+
+  const categoryName = useMemo(() => {
+    if (!product) return 'Цветы';
+    const cat = categories.find((c) => c.slug === product.category);
+    return cat ? cat.name : 'Цветы';
+  }, [product]);
 
   const handleAddToCart = () => {
     addItem(product, quantity);
@@ -67,7 +75,7 @@ function Product() {
           {/* Info */}
           <div className="flex flex-col justify-center">
             <span className="text-sm tracking-widest uppercase text-gray-500 mb-4">
-              {products.find((p) => p.category === product.category)?.category || 'Цветы'}
+              {categoryName}
             </span>
             
             <h1 className="font-serif text-4xl md:text-5xl text-gray-900 mb-6">

@@ -32,7 +32,15 @@ export function CartProvider({ children }) {
   useEffect(() => {
     if (isLoaded) {
       try {
-        localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(items));
+        // Only store essential fields to minimize localStorage size
+        const minimalItems = items.map(item => ({
+          id: item.id,
+          name: item.name,
+          price: item.price,
+          quantity: item.quantity,
+          image: item.image,
+        }));
+        localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(minimalItems));
       } catch (error) {
         console.error('Failed to save cart:', error);
       }

@@ -109,7 +109,7 @@ function Cart() {
               <div className="space-y-3 mb-6 pb-6 border-b border-warm-200">
                 <div className="flex justify-between text-gray-600">
                   <span>Товары</span>
-                  <span>{items.reduce((sum, i) => sum + i.quantity, 0)} шт.</span>
+                  <span>{totalItems} шт.</span>
                 </div>
                 <div className="flex justify-between text-gray-600">
                   <span>Доставка</span>

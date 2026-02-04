@@ -14,14 +14,27 @@ function Contacts() {
     message: '',
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState(null);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Here you would typically send the message to your backend
-    console.log('Message sent:', formData);
-    setIsSubmitted(true);
-    setFormData({ name: '', email: '', message: '' });
-    setTimeout(() => setIsSubmitted(false), 3000);
+    setIsSubmitting(true);
+    setError(null);
+
+    try {
+      // Here you would typically send the message to your backend
+      // Simulating API call for demo
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      console.log('Message sent:', formData);
+      setIsSubmitted(true);
+      setFormData({ name: '', email: '', message: '' });
+      setTimeout(() => setIsSubmitted(false), 3000);
+    } catch (err) {
+      setError('Произошла ошибка. Пожалуйста, попробуйте позже.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleChange = (e) => {
@@ -177,11 +190,18 @@ function Contacts() {
 
                 <button
                   type="submit"
+                  disabled={isSubmitting}
                   className="btn-primary w-full flex items-center justify-center"
                 >
                   <Send className="w-4 h-4 mr-2" />
-                  Отправить сообщение
+                  {isSubmitting ? 'Отправка...' : 'Отправить сообщение'}
                 </button>
+
+                {error && (
+                  <p className="text-red-600 text-center">
+                    {error}
+                  </p>
+                )}
 
                 {isSubmitted && (
                   <p className="text-green-600 text-center">
