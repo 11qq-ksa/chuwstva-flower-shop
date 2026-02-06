@@ -9,7 +9,7 @@ import { useCart } from '../context/CartContext';
  */
 
 function Cart() {
-  const { items, updateQuantity, removeItem, totalPrice } = useCart();
+  const { items, updateQuantity, removeItem, totalPrice, totalItems } = useCart();
 
   if (items.length === 0) {
     return (
